@@ -6,5 +6,10 @@ export default defineConfig({
     globals: true,
     root: './',
     include: ['**/*.e2e-spec.ts'],
+    env: {
+      DATABASE_URL: 'postgresql://postgres:postgres@localhost:5432/postgres',
+      JWT_SECRET: 'test-secret',
+      JWT_EXPIRES_IN: '1d',
+    },
   },
 });
