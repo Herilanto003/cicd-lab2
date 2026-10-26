@@ -23,9 +23,15 @@ NestJS 12 (ESM), TypeScript 6, pnpm 12, Vitest (not Jest), oxlint, Prettier.
 - E2E tests must call `configureApp(app)` before `app.init()`, otherwise tested routes are not prefixed with `/api`.
 - Document endpoints with `@ApiTags`, `@ApiOperation`, `@ApiOkResponse`; the Swagger CLI plugin is enabled in `nest-cli.json`.
 
+## CI/CD
+- `.github/workflows/ci.yml` runs lint, unit tests, e2e tests, build, then a Docker build. It pushes `<DOCKERHUB_USERNAME>/cicd-lab2` only on `main` or manual dispatch.
+- Configure GitHub secrets `DOCKERHUB_USERNAME` and `DOCKERHUB_TOKEN` (read/write) before pushing to `main`.
+- Local image: `docker build -t cicd-lab2 .`. The multi-stage `Dockerfile` runs `node dist/main.js` with production dependencies only; healthcheck hits `/api/health`.
+
 ## Toolchain gotchas
 - `pnpm-workspace.yaml` is pnpm 12 config, not a monorepo declaration. Keep `allowBuilds` there; when a new dependency has build scripts, use `pnpm approve-builds` instead of deleting the file.
 - `pnpm lint` (`oxlint --type-aware`) currently fails on this Windows machine because AppLocker blocks `tsgolint.exe` (`spawnSync ... UNKNOWN`). This is environmental; do not weaken lint config to work around it. Verify with `pnpm build` + tests instead.
 
 ## Agent skills
-Project-local NestJS guidance: `.agents/skills/nestjs-best-practices/SKILL.md` (module architecture, DI, security, health checks).
+- `.agents/skills/nestjs-best-practices/SKILL.md`: module architecture, DI, security, health checks.
+- `.agents/skills/github-actions-templates/SKILL.md`: GitHub Actions CI/CD patterns.
