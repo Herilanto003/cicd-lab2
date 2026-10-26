@@ -98,6 +98,7 @@ jobs:
             type=sha,prefix=sha-
 
       - name: Build and push
+        id: docker_build
         uses: docker/build-push-action@v7
         with:
           context: .
@@ -107,3 +108,10 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           platforms: linux/amd64
+
+      - name: Display Docker result
+        run: |
+          echo "Event: ${{ github.event_name }}"
+          echo "Branch: ${{ github.ref }}"
+          echo "Image: ${{ env.IMAGE_NAME }}"
+          echo "Digest: ${{ steps.docker_build.outputs.digest }}"
