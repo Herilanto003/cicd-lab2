@@ -69,6 +69,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: verify
     timeout-minutes: 20
+    environment: cicd-lab2
 
     steps:
       - name: Checkout
